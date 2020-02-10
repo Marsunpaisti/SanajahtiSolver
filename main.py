@@ -8,13 +8,6 @@ class Node:
         self.char = char
         self.children = []
         self.isWordFinished = False
-        self.counter = 1
-
-    def toString(self, prefix=""):
-        formatted = self.char + ": " + str(self.counter)
-        for child in self.children:
-            formatted += "\n" + prefix + child.toString(prefix + "\t")
-        return formatted
 
     def findChildByChar(self, char):
         for child in self.children:
@@ -31,7 +24,6 @@ def addNode(rootNode, word: str):
         foundChild = currentNode.findChildByChar(char)
 
         if foundChild:
-            foundChild.counter += 1
             currentNode = foundChild
         else:
             newNode = Node(char)
