@@ -1,6 +1,7 @@
 import re
 import sys
 import codecs
+import time
 
 
 class Node:
@@ -71,10 +72,13 @@ def createPrefixTree():
     return root
 
 
-def getWordsFromCoordinate(coord, lettersMatrix, rootNode):
-    wordsFound = []
-    recursiveWordSearch(coord, rootNode, lettersMatrix, "", [], wordsFound)
-    return wordsFound
+def getAllWords(lettersMatrix, rootNode):
+    resultList = []
+    for x in range(0, 4):
+        for y in range(0, 4):
+            recursiveWordSearch(
+                (x, y), rootNode, lettersMatrix, "", [], resultList)
+    return resultList
 
 
 def recursiveWordSearch(coord, previousNode, lettersMatrix, wordSoFar, usedCoords, wordsFound):
@@ -112,16 +116,17 @@ def main():
     lettersMatrix = [[], [], [], []]
     command = input("Input letters: ").lower()
     while len(command) == 16:
-        allWords = []
+        start = time.time()
         lettersMatrix = makeLettersMatrix(command)
-        for x in range(0, 4):
-            for y in range(0, 4):
-                allWords += getWordsFromCoordinate(
-                    (x, y), lettersMatrix, root)
+        allWords = getAllWords(lettersMatrix, root)
+        mid = time.time()
         allWords.sort(key=len)
         print("------------------------")
         for w in allWords:
             print(w)
+        end = time.time()
+        print("Algorithm took " + str(mid-start) +
+              " and with sort + print whole process took " + str(end-start))
         command = input("Input letters: ")
 
 
